@@ -230,13 +230,31 @@ function connectYouTube() {
     return;
   }
 
-  const tokenClient = google.accounts.oauth2.initTokenClient({
+  
+const clientId = getClientId();
+
+const tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: clientId,
-    scope: "https://www.googleapis.com/auth/youtube.readonly",
+
+    scope: [
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube.force-ssl"
+    ].join(" "),
+
     callback: async (response) => {
-      if (response.error) {
-        $("connectionStatus").textContent = "Connection failed: " + response.error;
-        return;
+        if (response.error) {
+            $("connectionStatus").textContent =
+                "Connection failed: " + response.error;
+            return;
+        }
+
+        accessToken = response.access_token;
+
+        $("connectionStatus").textContent =
+            "YouTube connected successfully!";
+    }
+});
+  
       }
       accessToken = response.access_token;
       $("connectionStatus").textContent = "YouTube connected!";
