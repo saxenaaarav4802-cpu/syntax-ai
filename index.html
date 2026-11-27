@@ -209,12 +209,21 @@ function getClientId() {
     localStorage.getItem("syntax_client_id") || "";
 }
 
+
 function connectYouTube() {
-  const clientId = getClientId();
-  if (!clientId) {
-    alert("First add your Google OAuth Client ID in Settings.");
-    showPage("settings");
-    return;
+    const clientId = getClientId();
+
+    if (!clientId) {
+        alert("First add your Google OAuth Client ID!");
+        showPage("settings");
+        return;
+    }
+
+    tokenClient.requestAccessToken({
+        prompt: "consent"
+    });
+}
+  
   }
   if (!window.google?.accounts?.oauth2) {
     alert("Google sign-in is still loading. Please try again.");
